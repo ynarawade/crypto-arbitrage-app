@@ -1,0 +1,1 @@
+export const PROFIT_THRESHOLD = 0.01;
