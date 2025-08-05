@@ -12,6 +12,6 @@ const symbolsBinance = symbolsKuCoin.map((symbol) => symbol.replace("-", ""));
 
 
 // connectToBinanceBookTicker(symbols);
-// connectToKuCoin(symbolsKuCoin);
+connectToKuCoin(symbolsKuCoin);
 
 export default server;

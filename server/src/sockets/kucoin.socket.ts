@@ -1,10 +1,11 @@
 import WebSocket from "ws";
-import { getKuCoinAllTickerUrl } from "../config/kucoin.config";
+import { getKuCoinTickerUrl } from "../config/kucoin.config";
+import { handleKuCoinTicker } from "../services/kuCoinTickerHandler.service";
 
-export async function connectToKuCoin(symbols:string[]) {
-  const urlWithToken = await getKuCoinAllTickerUrl(); // Get url with token attatched
-  console.log("URL,",urlWithToken);
-  
+export async function connectToKuCoin(symbols: string[]) {
+  const urlWithToken = await getKuCoinTickerUrl(); // Get url with token attatched
+  console.log("URL,", urlWithToken);
+
   const ws = new WebSocket(urlWithToken); // make a connection to the websocket
 
   ws.on("open", () => {
@@ -20,7 +21,13 @@ export async function connectToKuCoin(symbols:string[]) {
   });
 
   ws.on("message", (message) => {
-    console.log("MESSAGE INCOMING FORM KUCOIN");
-    console.log(message.toString());
+    try {
+      const parsed = JSON.parse(message.toString());      
+      if (parsed?.data) {
+        handleKuCoinTicker(parsed);
+      }
+    } catch (error) {
+      throw new Error("Error parsing kucoin ticker data!!");
+    }
   });
 }
