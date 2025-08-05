@@ -1,15 +1,11 @@
-import express, { type Request, type Response } from "express";
+import express from "express";
+import { createServer } from "node:http";
+import { connectToBinanceBookTicker } from "./sockets/binance.socket";
+
 const app = express();
+const server = createServer(app);
+const symbols = ["CTKUSDT"];
 
-app.get("/api/v1/test", (req: Request, res: Response) => {
-console.log(hello("12"));
+connectToBinanceBookTicker(symbols);
 
-  
-  res.send("server running fine very fine i love this ");
-});
-
-app.listen(4000);
-
-function hello(str:string){
-  return `hello ${str}`
-}
+export default server;
