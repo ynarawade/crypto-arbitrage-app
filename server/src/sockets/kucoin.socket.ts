@@ -22,12 +22,16 @@ export async function connectToKuCoin(symbols: string[]) {
 
   ws.on("message", (message) => {
     try {
-      const parsed = JSON.parse(message.toString());      
+      const parsed = JSON.parse(message.toString());
+
       if (parsed?.data) {
         handleKuCoinTicker(parsed);
+      } else {
+        console.warn("KuCoin: Unexpected message format", parsed);
       }
     } catch (error) {
-      throw new Error("Error parsing kucoin ticker data!!");
+      console.error("Error parsing KuCoin ticker data:", error);
+      console.error("RAW MESSAGE:", message.toString());
     }
   });
 }
