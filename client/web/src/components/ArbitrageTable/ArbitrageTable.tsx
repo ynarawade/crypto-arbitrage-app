@@ -1,12 +1,5 @@
-import ExchangeTableCell from "@/components/ArbitrageTable/ExchangeTableCell";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+"use client";
+import { Table } from "@/components/ui/table";
 import ArbitrageTableHeader from "./ArbitrageTableHeader";
 import ArbitrageTableBody from "./ArbitrageTableBody";
 

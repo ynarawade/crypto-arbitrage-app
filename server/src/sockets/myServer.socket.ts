@@ -4,8 +4,12 @@ import { calculateArbitrage } from "../arbitrage/arbitrageEngine";
 import { PROFIT_THRESHOLD } from "../constants";
 
 export function bootMyServer(server: Server) {
-  const symbols = ["TONUSDT","BTCUSDT","ETHUSDT","SOLUSDT"];
-  const io = new ioServer(server);
+  const symbols = ["TONUSDT", "BTCUSDT", "ETHUSDT", "SOLUSDT"];
+  const io = new ioServer(server,{
+    cors:{
+        origin:"*"
+    }
+  });
 
   io.on("connection", (socket) => {
     console.log("---- A USER CONNECTED TO SERVER ----");
@@ -15,9 +19,8 @@ export function bootMyServer(server: Server) {
         .map(calculateArbitrage)
         .filter((e) => e && e?.profitPercent > PROFIT_THRESHOLD);
       console.log("ARBITRAGE-----", results);
-
-      socket.emit("arbitrage", JSON.stringify(results));
-    }, 2000);
+      socket.emit("arbitrage", results);
+    }, 750);
 
     socket.on("disconnect", () => {
       clearInterval(interval);

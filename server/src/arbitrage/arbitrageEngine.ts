@@ -7,6 +7,7 @@ type ArbitrageResult = {
   buyPrice: number;
   sellPrice: number;
   profitPercent: number;
+  spread: number;
 };
 
 export function calculateArbitrage(symbol: string): ArbitrageResult | null {
@@ -27,6 +28,7 @@ export function calculateArbitrage(symbol: string): ArbitrageResult | null {
       buyPrice: binance.ask,
       sellPrice: kucoin.bid,
       profitPercent: profit,
+      spread: profit,
     });
   }
 
@@ -40,8 +42,9 @@ export function calculateArbitrage(symbol: string): ArbitrageResult | null {
       buyPrice: kucoin.ask,
       sellPrice: binance.bid,
       profitPercent: profit,
+      spread: profit,
     });
   }
 
-  return opportunities[0]; 
+  return opportunities[0];
 }

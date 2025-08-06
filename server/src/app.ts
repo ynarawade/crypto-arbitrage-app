@@ -7,7 +7,7 @@ import { bootMyServer } from "./sockets/myServer.socket";
 const app = express();
 const server = createServer(app);
 
-const symbolsKuCoin = ["TON-USDT","BTC-USDT","ETH-USDT","SOL-USDT"];
+const symbolsKuCoin = ["TON-USDT", "BTC-USDT", "ETH-USDT", "SOL-USDT"];
 const symbolsBinance = symbolsKuCoin.map((symbol) => symbol.replace("-", ""));
 
 connectToBinanceBookTicker(symbolsBinance);
