@@ -1,4 +1,5 @@
 import { getPrice } from "../prices/priceStore";
+import { isSynced } from "../utils/helper";
 
 type ArbitrageResult = {
   pair: string;
@@ -15,6 +16,10 @@ export function calculateArbitrage(symbol: string): ArbitrageResult | null {
   const kucoin = getPrice("kucoin", symbol);
 
   if (!binance || !kucoin) return null;
+  const bTime = binance.timestamps!;
+  const kTime = kucoin.timestamps!;
+
+  if (!isSynced(bTime, kTime)) return null;
 
   const opportunities: ArbitrageResult[] = [];
 
@@ -46,5 +51,5 @@ export function calculateArbitrage(symbol: string): ArbitrageResult | null {
     });
   }
 
-  return opportunities[0];
+  return opportunities.sort((a, b) => b.profitPercent - a.profitPercent)[0];
 }

@@ -11,13 +11,33 @@ export async function connectToKuCoin(symbols: string[]) {
   ws.on("open", () => {
     console.log("----- CONNECTED TO KUCOIN WEBSOCKET -----");
     const data = {
-      id: 1,
+      id: Date.now(),
       type: "subscribe",
       topic: `/market/ticker:${symbols}`,
       response: true,
     };
 
     ws.send(JSON.stringify(data));
+
+    {
+      /* SEND PING EVERY 15 SEC TO KEEP CONNECTION ALIVE */
+    }
+    const pindData = {
+      id: Date.now(),
+      type: "ping",
+    };
+    const pingInterval = setInterval(() => {
+      ws.send(JSON.stringify(pindData));
+    }, 30 * 1000);
+
+    ws.on("close", () => {
+      console.log("KuCoin WebSocket Closed");
+      clearInterval(pingInterval);
+    });
+    ws.on("error", (err) => {
+      console.error("WebSocket Error:", err);
+      clearInterval(pingInterval);
+    });
   });
 
   ws.on("message", (message) => {

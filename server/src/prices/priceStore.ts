@@ -1,7 +1,7 @@
 type PriceData = {
   bid: number;
   ask: number;
-  transactionTimestamp: number;
+  timestamps?: number;
 };
 
 type Exchange = "binance" | "kucoin";
@@ -16,7 +16,7 @@ export function updatePrice(
   symbol: string,
   data: PriceData
 ) {
-  prices[exchange].set(symbol, data);
+  prices[exchange].set(symbol, { ...data, timestamps: Date.now() });
 }
 
 export function getPrice(
