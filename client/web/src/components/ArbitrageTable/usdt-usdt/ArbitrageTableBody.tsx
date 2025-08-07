@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { TableBody } from "../ui/table";
+import { TableBody } from "../../ui/table";
 import ArbitrageTableRow from "./ArbitrageTableRow";
 import { io } from "socket.io-client";
 
@@ -16,7 +16,6 @@ type ArbitrageResult = {
 type ArbitrageMap = Record<string, ArbitrageResult>;
 const symbols = ["TONUSDT", "BTCUSDT", "ETHUSDT", "SOLUSDT"];
 const TOTAL_FEES = 0.2; // This is in percentage
-
 
 function ArbitrageTableBody() {
   const [data, setData] = useState<ArbitrageMap>({});

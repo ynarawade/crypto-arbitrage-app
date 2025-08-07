@@ -1,12 +1,17 @@
 import { Server } from "node:http";
 import { Server as ioServer } from "socket.io";
 import { calculateArbitrage } from "../arbitrage/arbitrageEngine";
-import { PROFIT_THRESHOLD } from "../constants";
+import { InrArbitrageType, PROFIT_THRESHOLD } from "../constants";
 import { calculateInrArbitrage } from "../arbitrage/arbitrageInrEngine";
 
 export function bootMyServer(server: Server) {
   const symbols = ["TONUSDT", "BTCUSDT", "ETHUSDT", "SOLUSDT"];
-  const symbolsInr = ["TON-INR", "BTC-INR", "ETH-INR", "SOL-INR"];
+  const pairs = [
+    { usdt: "TONUSDT", inr: "TON-INR" },
+    { usdt: "BTCUSDT", inr: "BTC-INR" },
+    { usdt: "ETHUSDT", inr: "ETH-INR" },
+    { usdt: "SOLUSDT", inr: "SOL-INR" },
+  ];
   const io = new ioServer(server, {
     cors: {
       origin: "*",
@@ -25,14 +30,22 @@ export function bootMyServer(server: Server) {
     // }, 750);
 
     const interval2 = setInterval(() => {
-      let result;
-      for (let i = 0; i < symbols.length; i++) {
-        result = calculateInrArbitrage({
-          symbolUsdt: symbols[i],
-          symbolInr: symbolsInr[i],
+      const results: InrArbitrageType[] = [];
+
+      for (const { usdt, inr } of pairs) {
+        const result = calculateInrArbitrage({
+          symbolUsdt: usdt,
+          symbolInr: inr,
         });
+        if (result && result.length > 0) {
+          results.push(...result); // spread the array into the final list
+        }
       }
-      console.log("ARBITRAGE-----", result);
+
+      if (results.length > 0) {
+        console.log("INR ARBITRAGE -----", results);
+        socket.emit("inr-arbitrage", results);
+      }
     }, 8000);
 
     socket.on("disconnect", () => {

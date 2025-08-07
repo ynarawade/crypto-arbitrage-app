@@ -1,18 +1,19 @@
 import React from "react";
-import { TableHead, TableHeader, TableRow } from "../ui/table";
+import { TableHead, TableHeader, TableRow } from "../../ui/table";
 
-function ArbitrageTableHeader() {
+function UsdtInrArbiTableHeader() {
   return (
     <TableHeader>
       <TableRow>
         <TableHead className="w-[100px]">Pair</TableHead>
         <TableHead>Buy Exchange</TableHead>
         <TableHead>Sell Exchange</TableHead>
-        <TableHead >Overall Profit</TableHead>
+        <TableHead>Conversion Rate</TableHead>
+        <TableHead>Overall Profit</TableHead>
         <TableHead>Spread %</TableHead>
       </TableRow>
     </TableHeader>
   );
 }
 
-export default ArbitrageTableHeader;
+export default UsdtInrArbiTableHeader;

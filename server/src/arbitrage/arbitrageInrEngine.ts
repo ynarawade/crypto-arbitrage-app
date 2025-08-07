@@ -1,17 +1,7 @@
-import { DEFAULT_CAPITAL_USDT } from "../constants";
+import { DEFAULT_CAPITAL_USDT, InrArbitrageType } from "../constants";
 import { getPrice } from "../prices/priceStore";
 
-type InrArbitrageType = {
-  pair: string;
-  buyExchange: "Binance(USDT)" | "KuCoin(USDT)" | "Zebpay(INR)";
-  sellExchange: "Binance(USDT)" | "KuCoin(USDT)" | "Zebpay(INR)";
-  buyPrice: number;
-  sellPrice: number;
-  profit: number; // this will be raw profit no fee reductions
-  spread: number;
-  usdtInrRate: number;
-  buyCostInr: number;
-};
+
 
 interface CalculateInrArbitrageProps {
   symbolUsdt: string; // e.g., BTCUSDT

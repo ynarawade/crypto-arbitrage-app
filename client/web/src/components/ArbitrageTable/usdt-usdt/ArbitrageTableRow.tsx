@@ -1,5 +1,4 @@
-import React from "react";
-import { TableCell, TableRow } from "../ui/table";
+import { TableCell, TableRow } from "../../ui/table";
 import ExchangeTableCell from "./ExchangeTableCell";
 
 type ArbitrageResult = {
