@@ -1,8 +1,6 @@
 import { DEFAULT_CAPITAL_USDT, InrArbitrageType } from "../constants";
 import { getPrice } from "../prices/priceStore";
 
-
-
 interface CalculateInrArbitrageProps {
   symbolUsdt: string; // e.g., BTCUSDT
   symbolInr: string; // e.g., BTC-INR
@@ -19,7 +17,6 @@ export function calculateInrArbitrage({
 
   if (!binance || !kucoin || !zebpayInr || !usdtInr) return null;
 
-  const usdtInrRate = usdtInr.bid;
   const token = symbolUsdt.replace("USDT", "");
 
   const opportunities: InrArbitrageType[] = [];
@@ -28,11 +25,11 @@ export function calculateInrArbitrage({
   {
     const tokens = DEFAULT_CAPITAL_USDT / binance.ask;
     const sellInr = tokens * zebpayInr.bid;
-    const costInr = DEFAULT_CAPITAL_USDT * usdtInrRate;
+    const costInr = DEFAULT_CAPITAL_USDT * usdtInr.ask;
     const profit = sellInr - costInr;
     const spread =
-      ((zebpayInr.bid - binance.ask * usdtInrRate) /
-        (binance.ask * usdtInrRate)) *
+      ((zebpayInr.bid - binance.ask * usdtInr.ask) /
+        (binance.ask * usdtInr.ask)) *
       100;
 
     opportunities.push({
@@ -43,7 +40,7 @@ export function calculateInrArbitrage({
       sellPrice: zebpayInr.bid,
       profit: Number(profit.toFixed(2)),
       spread: Number(spread.toFixed(2)),
-      usdtInrRate,
+      usdtInrRate: usdtInr.ask,
       buyCostInr: Number(costInr.toFixed(2)),
     });
   }
@@ -52,11 +49,11 @@ export function calculateInrArbitrage({
   {
     const tokens = DEFAULT_CAPITAL_USDT / kucoin.ask;
     const sellInr = tokens * zebpayInr.bid;
-    const costInr = DEFAULT_CAPITAL_USDT * usdtInrRate;
+    const costInr = DEFAULT_CAPITAL_USDT * usdtInr.ask;
     const profit = sellInr - costInr;
     const spread =
-      ((zebpayInr.bid - kucoin.ask * usdtInrRate) /
-        (kucoin.ask * usdtInrRate)) *
+      ((zebpayInr.bid - kucoin.ask * usdtInr.ask) /
+        (kucoin.ask * usdtInr.ask)) *
       100;
 
     opportunities.push({
@@ -67,20 +64,20 @@ export function calculateInrArbitrage({
       sellPrice: zebpayInr.bid,
       profit: Number(profit.toFixed(2)),
       spread: Number(spread.toFixed(2)),
-      usdtInrRate,
+      usdtInrRate: usdtInr.ask,
       buyCostInr: Number(costInr.toFixed(2)),
     });
   }
 
   // 3. Buy Zebpay INR → Sell Binance USDT
   {
-    const capitalInr = DEFAULT_CAPITAL_USDT * usdtInrRate;
+    const capitalInr = DEFAULT_CAPITAL_USDT * usdtInr.bid;
     const tokens = capitalInr / zebpayInr.ask;
     const sellUsdt = tokens * binance.bid;
-    const sellInr = sellUsdt * usdtInrRate;
-    const profit = sellInr - capitalInr;
+    const costInr = sellUsdt * usdtInr.bid;
+    const profit = costInr - capitalInr;
     const spread =
-      ((binance.bid * usdtInrRate - zebpayInr.ask) / zebpayInr.ask) * 100;
+      ((binance.bid * usdtInr.bid - zebpayInr.ask) / zebpayInr.ask) * 100;
 
     opportunities.push({
       pair: token,
@@ -90,20 +87,20 @@ export function calculateInrArbitrage({
       sellPrice: binance.bid,
       profit: Number(profit.toFixed(2)),
       spread: Number(spread.toFixed(2)),
-      usdtInrRate,
+      usdtInrRate: usdtInr.bid,
       buyCostInr: Number(capitalInr.toFixed(2)),
     });
   }
 
   // 4. Buy Zebpay INR → Sell KuCoin USDT
   {
-    const capitalInr = DEFAULT_CAPITAL_USDT * usdtInrRate;
+    const capitalInr = DEFAULT_CAPITAL_USDT * usdtInr.bid;
     const tokens = capitalInr / zebpayInr.ask;
     const sellUsdt = tokens * kucoin.bid;
-    const sellInr = sellUsdt * usdtInrRate;
-    const profit = sellInr - capitalInr;
+    const costInr = sellUsdt * usdtInr.bid;
+    const profit = costInr - capitalInr;
     const spread =
-      ((kucoin.bid * usdtInrRate - zebpayInr.ask) / zebpayInr.ask) * 100;
+      ((kucoin.bid * usdtInr.bid - zebpayInr.ask) / zebpayInr.ask) * 100;
 
     opportunities.push({
       pair: token,
@@ -113,7 +110,7 @@ export function calculateInrArbitrage({
       sellPrice: kucoin.bid,
       profit: Number(profit.toFixed(2)),
       spread: Number(spread.toFixed(2)),
-      usdtInrRate,
+      usdtInrRate: usdtInr.bid,
       buyCostInr: Number(capitalInr.toFixed(2)),
     });
   }
