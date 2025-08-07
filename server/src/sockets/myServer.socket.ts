@@ -1,17 +1,19 @@
 import { Server } from "node:http";
 import { Server as ioServer } from "socket.io";
 import { calculateArbitrage } from "../arbitrage/arbitrageEngine";
-import { InrArbitrageType, PROFIT_THRESHOLD } from "../constants";
+import {
+  InrArbitrageType,
+  PROFIT_THRESHOLD,
+  USDT_INR_PAIRS,
+} from "../constants";
 import { calculateInrArbitrage } from "../arbitrage/arbitrageInrEngine";
 
 export function bootMyServer(server: Server) {
-  const symbols = ["TONUSDT", "BTCUSDT", "ETHUSDT", "SOLUSDT"];
-  const pairs = [
-    { usdt: "TONUSDT", inr: "TON-INR" },
-    { usdt: "BTCUSDT", inr: "BTC-INR" },
-    { usdt: "ETHUSDT", inr: "ETH-INR" },
-    { usdt: "SOLUSDT", inr: "SOL-INR" },
-  ];
+  const pairs = USDT_INR_PAIRS.map((symbol) => ({
+    usdt: symbol.usdt.replace("-", ""),
+    inr: symbol.inr.toString(),
+  }));
+
   const io = new ioServer(server, {
     cors: {
       origin: "*",

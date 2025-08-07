@@ -12,3 +12,19 @@ export type InrArbitrageType = {
   usdtInrRate: number;
   buyCostInr: number;
 };
+
+export const USDT_INR_PAIRS = [
+  { usdt: "BTC-USDT", inr: "BTC-INR" },
+  { usdt: "ETH-USDT", inr: "ETH-INR" },
+  { usdt: "SOL-USDT", inr: "SOL-INR" },
+  { usdt: "XRP-USDT", inr: "XRP-INR" },
+  { usdt: "DOGE-USDT", inr: "DOGE-INR" },
+  { usdt: "ADA-USDT", inr: "ADA-INR" },
+  { usdt: "AVAX-USDT", inr: "AVAX-INR" },
+  { usdt: "MATIC-USDT", inr: "MATIC-INR" },
+  { usdt: "DOT-USDT", inr: "DOT-INR" },
+  { usdt: "SHIB-USDT", inr: "SHIB-INR" },
+  { usdt: "LINK-USDT", inr: "LINK-INR" },
+  { usdt: "LTC-USDT", inr: "LTC-INR" },
+  { usdt: "BNB-USDT", inr: "BNB-INR" }
+];

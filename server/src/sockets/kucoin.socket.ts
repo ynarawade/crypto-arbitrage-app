@@ -4,7 +4,7 @@ import { handleKuCoinTicker } from "../services/kuCoinTickerHandler.service";
 
 export async function connectToKuCoin(symbols: string[]) {
   const urlWithToken = await getKuCoinTickerUrl(); // Get url with token attatched
-  console.log("URL,", urlWithToken);
+
 
   const ws = new WebSocket(urlWithToken); // make a connection to the websocket
 

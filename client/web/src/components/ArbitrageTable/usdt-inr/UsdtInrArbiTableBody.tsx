@@ -2,6 +2,7 @@ import { TableBody } from "@/components/ui/table";
 import React, { useEffect, useState } from "react";
 import UsdtInrArbitrageTableRow from "./UsdtInrArbiTableRow";
 import { io } from "socket.io-client";
+import { TRADING_FEES } from "@/app/constants";
 type InrArbitrageType = {
   pair: string;
   buyExchange?: "Binance(USDT)" | "KuCoin(USDT)" | "Zebpay(INR)";
@@ -29,9 +30,11 @@ function UsdtInrArbiTableBody() {
       "inr-arbitrage",
       (incoming: InrArbitrageType | InrArbitrageType[]) => {
         const incomingArray = Array.isArray(incoming) ? incoming : [incoming];
+        const totalFeeRate = TRADING_FEES.zebpay.inr + TRADING_FEES.binance.usdt;
+
         const withFeesDeducted = incomingArray.map((entry) => ({
           ...entry,
-          profit: entry.profit ? +(entry.profit * 0.997).toFixed(2) : 0,
+          profit: entry.profit ? +(entry.profit * (1 - totalFeeRate)): 0,
         }));
 
         setData(() => [...withFeesDeducted]);

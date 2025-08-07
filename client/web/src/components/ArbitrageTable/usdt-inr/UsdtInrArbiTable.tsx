@@ -8,8 +8,10 @@ function UsdtInrArbitrageTable() {
     <Table>
       <TableCaption>
         Note: All profits are calculated assuming a default wallet balance of
-        1000 USDT. A total trading fee of 0.4% has been accounted for — 0.1% on
-        Binance/KuCoin and 0.3% on ZebPay.
+        1000 USDT.
+        <br />A total trading fee has been accounted for — 0.1% on Binance and
+        KuCoin, and 0.08% (INR pairs) or 0.06% (USDT pairs) on ZebPay, depending
+        on the trading pair.
       </TableCaption>
       <UsdtInrArbiTableHeader />
       <UsdtInrArbiTableBody />
