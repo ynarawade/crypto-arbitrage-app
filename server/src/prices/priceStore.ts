@@ -4,11 +4,12 @@ type PriceData = {
   timestamps?: number;
 };
 
-type Exchange = "binance" | "kucoin";
+type Exchange = "binance" | "kucoin" | "zebpay";
 
 const prices: Record<Exchange, Map<string, PriceData>> = {
   binance: new Map(),
   kucoin: new Map(),
+  zebpay: new Map(),
 };
 
 export function updatePrice(

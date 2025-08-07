@@ -11,6 +11,9 @@ type ArbitrageResult = {
   spread: number;
 };
 
+{
+  /*SPOT TO SPOT (usdt-usdt) */
+}
 export function calculateArbitrage(symbol: string): ArbitrageResult | null {
   const binance = getPrice("binance", symbol);
   const kucoin = getPrice("kucoin", symbol);

@@ -1,0 +1,1 @@
+export const ZEBPAY_BASE_STREAM = "wss://socket.zebapi.com/api/v1/websocket/public";
