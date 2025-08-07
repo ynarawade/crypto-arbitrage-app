@@ -13,8 +13,8 @@ const symbolsZebpay = ["TON-INR", "BTC-INR", "ETH-INR", "SOL-INR","USDT-INR"];
 const symbolsBinance = symbolsKuCoin.map((symbol) => symbol.replace("-", ""));
 
 connectToZebpaySocket(symbolsZebpay);
-// connectToBinanceBookTicker(symbolsBinance);
-// connectToKuCoin(symbolsKuCoin);
-// bootMyServer(server);
+connectToBinanceBookTicker(symbolsBinance);
+connectToKuCoin(symbolsKuCoin);
+bootMyServer(server);
 
 export default server;

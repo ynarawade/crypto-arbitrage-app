@@ -15,16 +15,16 @@ export function handleZebpayTopBuySell(data: any) {
 
   // Update bid or ask
   if (type === "exchange-topbuy") {
-    zebpayBook[symbol].bid = price;
-  } else if (type === "exchange-topsell") {
     zebpayBook[symbol].ask = price;
+  } else if (type === "exchange-topsell") {
+    zebpayBook[symbol].bid = price;
   }
 
   const { bid, ask } = zebpayBook[symbol];
 
   // Only print when both are available
   if (bid !== null && ask !== null) {
-    console.log(`ZEBPAY ${symbol} — bid: ${bid}, ask: ${ask}`);
+    // console.log(`ZEBPAY ${symbol} — bid: ${bid}, ask: ${ask}`);
    updatePrice("zebpay",symbol,{
     ask:parseFloat(ask.toString()),
     bid:parseFloat(bid.toString())
