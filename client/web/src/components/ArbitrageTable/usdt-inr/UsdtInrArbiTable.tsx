@@ -1,4 +1,4 @@
-// "use client";
+"use client";
 import { Table, TableCaption } from "@/components/ui/table";
 import UsdtInrArbiTableHeader from "./UsdtInrArbiTableHeader";
 import UsdtInrArbiTableBody from "./UsdtInrArbiTableBody";

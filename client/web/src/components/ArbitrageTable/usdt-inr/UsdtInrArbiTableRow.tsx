@@ -55,7 +55,7 @@ export default function UsdtInrArbitrageTableRow({
               profit && profit > 0 ? "text-green-600" : "text-muted-foreground"
             )}
           >
-            ₹{profit?.toFixed(0)}
+            ₹{profit?.toFixed(0) ?? "0"}
           </TableCell>
           <TableCell
             className={cn(
@@ -63,7 +63,7 @@ export default function UsdtInrArbitrageTableRow({
               spread && spread > 0 ? "text-green-600" : "text-muted-foreground"
             )}
           >
-            {spread?.toFixed(2)}%
+            {spread?.toFixed(2) ?? "0"}%
           </TableCell>
         </>
       )}

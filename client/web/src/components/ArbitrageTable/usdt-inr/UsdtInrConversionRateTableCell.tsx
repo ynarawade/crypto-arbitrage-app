@@ -14,7 +14,7 @@ export default function UsdtInrConversionRateTableCell({
 }: UsdtInrConversionRateTableCellProps) {
   return (
  <TableCell className="text-sm px-2 py-1 whitespace-nowrap">
-  ₹{rate.toFixed(2)} → ₹{buyCostInr.toLocaleString("en-IN", { maximumFractionDigits: 0 })}
+  ₹{rate?.toFixed(2)} → ₹{buyCostInr?.toLocaleString("en-IN", { maximumFractionDigits: 0 })}
 </TableCell>
   );
 }

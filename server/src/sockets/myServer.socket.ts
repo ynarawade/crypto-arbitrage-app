@@ -46,7 +46,7 @@ export function bootMyServer(server: Server) {
         console.log("INR ARBITRAGE -----", results);
         socket.emit("inr-arbitrage", results);
       }
-    }, 8000);
+    }, 1000);
 
     socket.on("disconnect", () => {
       //   clearInterval(interval);

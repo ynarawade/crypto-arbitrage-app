@@ -41,7 +41,7 @@ export default function UsdtInrArbiExchangeTableCell({
       </Link>
       <div className="font-semibold text-md">
         {getPricePrefix(exchange)}
-        {price.toLocaleString("en-IN", { maximumFractionDigits: 2 })}
+        {price?.toLocaleString("en-IN", { maximumFractionDigits: 2 })}
       </div>
     </TableCell>
   );
