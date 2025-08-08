@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import UsdtInrArbitrageTableRow from "./UsdtInrArbiTableRow";
 import { io } from "socket.io-client";
 import { TRADING_FEES } from "@/app/constants";
+import ShimmerLoadingRow from "@/components/ShimmerLoadingRow";
+
 type InrArbitrageType = {
   pair: string;
   buyExchange?: "Binance(USDT)" | "KuCoin(USDT)" | "Zebpay(INR)";
@@ -18,6 +20,7 @@ type InrArbitrageType = {
 
 function UsdtInrArbiTableBody() {
   const [data, setData] = useState<InrArbitrageType[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const socket = io("ws://localhost:4000");
@@ -30,14 +33,16 @@ function UsdtInrArbiTableBody() {
       "inr-arbitrage",
       (incoming: InrArbitrageType | InrArbitrageType[]) => {
         const incomingArray = Array.isArray(incoming) ? incoming : [incoming];
-        const totalFeeRate = TRADING_FEES.zebpay.inr + TRADING_FEES.binance.usdt;
+        const totalFeeRate =
+          TRADING_FEES.zebpay.inr + TRADING_FEES.binance.usdt;
 
         const withFeesDeducted = incomingArray.map((entry) => ({
           ...entry,
-          profit: entry.profit ? +(entry.profit * (1 - totalFeeRate)): 0,
+          profit: entry.profit ? +(entry.profit * (1 - totalFeeRate)) : 0,
         }));
 
         setData(() => [...withFeesDeducted]);
+        setLoading(!loading);
       }
     );
     socket.on("disconnect", () => {
@@ -50,11 +55,14 @@ function UsdtInrArbiTableBody() {
   }, []);
   return (
     <TableBody>
-      {data.map((data, index) => {
-        return <UsdtInrArbitrageTableRow key={data.pair + index} {...data} />;
-      })}
+      {loading
+        ? Array.from({ length: 7 }).map((_, i) => (
+            <ShimmerLoadingRow key={i} />
+          ))
+        : data.map((item, index) => (
+            <UsdtInrArbitrageTableRow key={item.pair + index} {...item} />
+          ))}
     </TableBody>
   );
 }
-
 export default UsdtInrArbiTableBody;
