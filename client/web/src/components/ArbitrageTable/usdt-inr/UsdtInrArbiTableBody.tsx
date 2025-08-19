@@ -33,18 +33,42 @@ function UsdtInrArbiTableBody() {
       "inr-arbitrage",
       (incoming: InrArbitrageType | InrArbitrageType[]) => {
         const incomingArray = Array.isArray(incoming) ? incoming : [incoming];
-        const totalFeeRate =
-          TRADING_FEES.zebpay.inr + TRADING_FEES.binance.usdt;
 
-        const withFeesDeducted = incomingArray.map((entry) => ({
-          ...entry,
-          profit: entry.profit ? +(entry.profit * (1 - totalFeeRate)) : 0,
-        }));
+        const withFeesDeducted = incomingArray.map((entry) => {
+          if (!entry.profit) return { ...entry, profit: 0 };
+
+          const rawProfit = entry.profit;
+
+          // Trading + TDS cut (assume binance buy + zebpay sell for now)
+          const tradingFeeRate =
+            TRADING_FEES.zebpay.inr +
+            TRADING_FEES.binance.usdt +
+            TRADING_FEES.tds;
+
+            
+            
+
+          const afterFees = rawProfit * (1 - tradingFeeRate);
+          console.log("TRADING FEES",(1-tradingFeeRate));
+
+          // Govt tax only if profit is positive
+          const govtTax = afterFees > 0 ? afterFees * TRADING_FEES.govtTax : 0;
+
+          console.log("GOVT FEES",govtTax);
+          const netProfit = afterFees - govtTax;
+
+
+          return {
+            ...entry,
+            profit: +netProfit.toFixed(2),
+          };
+        });
 
         setData(() => [...withFeesDeducted]);
-        setLoading(!loading);
+        setLoading(false);
       }
     );
+
     socket.on("disconnect", () => {
       console.log("Disconnected from WebSocket");
     });
@@ -56,9 +80,7 @@ function UsdtInrArbiTableBody() {
   return (
     <TableBody>
       {loading
-        ? Array.from({ length: 7 }).map((_, i) => (
-            <ShimmerLoadingRow key={i} />
-          ))
+        ? Array.from({ length: 7 }).map((_, i) => <ShimmerLoadingRow key={i} />)
         : data.map((item, index) => (
             <UsdtInrArbitrageTableRow key={item.pair + index} {...item} />
           ))}

@@ -9,4 +9,6 @@ export const TRADING_FEES = {
   binance: {
     usdt: 0.001, // 0.1%
   },
+  tds: 0.01, // 1%
+  govtTax:0.3 // 30%
 };

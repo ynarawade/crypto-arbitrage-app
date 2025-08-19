@@ -28,7 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} antialiased w-full h-screen`}>
+      <body className={`${inter.variable} ${poppins.variable} antialiased w-full h-screen font-poppins`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
